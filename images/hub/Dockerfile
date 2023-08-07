@@ -89,12 +89,6 @@ FROM slim-stage as default-stage
 
 USER root
 
-WORKDIR ~/
-COPY ./jwtauthenticator ./jwtauthenticator
-
-RUN python -m pip install --upgrade pip
-RUN pip install --no-cache-dir -e ./jwtauthenticator
-
 ARG PIP_CACHE_DIR=/tmp/pip-cache
 RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
     --mount=type=cache,from=build-stage,source=/tmp/wheels,target=/tmp/wheels \
@@ -114,4 +108,5 @@ RUN apt-get update \
         vim \
  && rm -rf /var/lib/apt/lists/*
 
+RUN pip install jupyterhub-jwtauthenticator
 USER ${NB_USER}
